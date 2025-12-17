@@ -108,12 +108,52 @@ h1 {
   cursor: pointer;
 }
 
+.text.editing {
+  background: #fff3cd;
+  padding: 4px 6px;
+  border-radius: 4px;
+  outline: 1px dashed #f0ad4e;
+}
 .edit {
-  background: #e0e7ff;
-  color: #1e40af;
+  background: #d1e7dd;
+  color: #0f5132;
 }
 
 .delete {
   background: #fee2e2;
   color: #991b1b;
 }
+
+/* ===== SHARK ANIMATION ===== */
+.shark-orbit {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  pointer-events: none;
+  animation: spin 12s linear infinite;
+}
+
+.shark {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 32px;
+}
+
+/* muter */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* hover card → hiu makin niat */
+.todo-card:hover ~ .shark-orbit,
+.todo-card:hover + .shark-orbit {
+  animation-duration: 4s;
+}
+
