@@ -1,77 +1,38 @@
-const taskInput = document.getElementById('taskInput');
-const taskList = document.getElementById('taskList');
-const addBtn = document.getElementById('addBtn');
+const input = document.getElementById("taskInput");
+const addBtn = document.getElementById("addBtn");
+const list = document.getElementById("taskList");
 
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+addBtn.addEventListener("click", addTask);
+input.addEventListener("keydown", e => {
+  if (e.key === "Enter") addTask();
+});
 
-function save() {
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-}
+function addTask() {
+  const text = input.value.trim();
+  if (!text) return;
 
-function render() {
-  taskList.innerHTML = '';
+  const li = document.createElement("li");
+  li.className = "todo-item";
 
-  tasks.forEach((task, index) => {
-    const li = document.createElement('li');
+  li.innerHTML = `
+    <div class="todo-left">
+      <input type="checkbox">
+      <span class="todo-text">${text}</span>
+    </div>
+    <div class="todo-actions">
+      <button class="edit">Edit</button>
+      <button class="delete">Hapus</button>
+    </div>
+  `;
 
-    const row = document.createElement('div');
-    row.className = 'task-row';
-
-    const left = document.createElement('div');
-    left.className = 'task-left';
-
-    const cb = document.createElement('input');
-    cb.type = 'checkbox';
-    cb.checked = task.done;
-
-    const text = document.createElement('span');
-    text.textContent = task.text;
-    if (task.done) text.classList.add('completed');
-
-    const status = document.createElement('span');
-    status.className = 'status' + (task.done ? ' done' : '');
-    status.textContent = task.done ? 'Selesai' : 'Belum';
-
-    cb.onchange = () => {
-      task.done = cb.checked;
-      save();
-      render();
-    };
-
-    left.append(cb, text);
-    row.append(left, status);
-
-    const actions = document.createElement('div');
-    actions.className = 'actions';
-
-    const edit = document.createElement('button');
-    edit.textContent = 'Edit';
-    edit.className = 'edit';
-    edit.onclick = () => {
-      const val = prompt('Edit tugas', task.text);
-      if (val) task.text = val;
-      save(); render();
-    };
-
-    const del = document.createElement('button');
-    del.textContent = 'Hapus';
-    del.className = 'delete';
-    del.onclick = () => {
-      tasks.splice(index, 1);
-      save(); render();
-    };
-
-    actions.append(edit, del);
-    li.append(row, actions);
-    taskList.appendChild(li);
+  li.querySelector("input").addEventListener("change", e => {
+    li.querySelector(".todo-text").classList.toggle("done");
   });
+
+  li.querySelector(".delete").addEventListener("click", () => {
+    li.remove();
+  });
+
+  list.prepend(li);
+  input.value = "";
 }
-
-addBtn.onclick = () => {
-  if (!taskInput.value.trim()) return;
-  tasks.push({ text: taskInput.value, done: false });
-  taskInput.value = '';
-  save(); render();
-};
-
-render();
