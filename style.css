@@ -122,38 +122,32 @@ h1 {
 .delete {
   background: #fee2e2;
   color: #991b1b;
+}/* ===== CAT WALK ===== */
+#cat {
+  position: fixed;
+  bottom: 10px;
+  left: -60px;
+  font-size: 40px;
+  cursor: pointer;
+  z-index: 9999;
+  animation: walkRight 12s linear infinite;
 }
 
-/* ===== SHARK ANIMATION ===== */
-.shark-orbit {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  pointer-events: none;
-  animation: spin 12s linear infinite;
-}
-
-.shark {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 32px;
-}
-
-/* muter */
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
+/* jalan ke kanan */
+@keyframes walkRight {
+  0% {
+    left: -60px;
+    transform: scaleX(1);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    left: calc(100vw - 40px);
+    transform: scaleX(1);
+  }
+  50.01% {
+    transform: scaleX(-1); /* balik badan */
+  }
+  100% {
+    left: -60px;
+    transform: scaleX(-1);
   }
 }
-
-/* hover card → hiu makin niat */
-.todo-card:hover ~ .shark-orbit,
-.todo-card:hover + .shark-orbit {
-  animation-duration: 4s;
-}
-
